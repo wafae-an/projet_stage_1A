@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Réclamations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+     body{
+        font-family: 'Roboto',sans-serif;
+        font-weight: 400;
+        font-style: normal;
+
+     }
+
+    </style>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Edit row on edit button click
+            $(document).on("click", ".edit", function(){
+                var row = $(this).closest("tr");
+                row.find(".edit, .update").toggle();
+                row.find(".static-field").hide();
+                row.find(".editable-field").show();
+            });
+
+            // Update row on update button click
+            $(document).on("click", ".update", function(){
+                var claimId = $(this).data("id");
+                var row = $(this).closest("tr");
+                var formData = {
+                    'citizen_name': row.find(".editable-field input[name='citizen_name']").val(),
+                    'citizen_email': row.find(".editable-field input[name='citizen_email']").val(),
+                    'citizen_contact': row.find(".editable-field input[name='citizen_contact']").val(),
+                    'citizen_adresse': row.find(".editable-field input[name='citizen_adresse']").val(),
+                    'claim_type': row.find(".editable-field select[name='claim_type']").val(),
+                    'claim_description': row.find(".editable-field input[name='claim_description']").val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                };
+
+                $.ajax({
+                    url: '/update-claim/' + claimId + '/',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if(response.success) {
+                            row.find(".static-field").each(function(){
+                                var fieldName = $(this).data("field");
+                                $(this).text(formData[fieldName]);
+                            });
+                            row.find(".static-field").show();
+                            row.find(".editable-field").hide();
+                            row.find(".edit, .update").toggle();
+                        } else {
+                            alert('Erreur lors de la mise à jour de la réclamation.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Erreur lors de la mise à jour de la réclamation.');
+                    }
+                });
+            });
+
+            // Delete row on delete button click
+            $(document).on("click", ".delete", function(){
+                var claimId = $(this).data("id");
+                var row = $(this).closest("tr");
+
+                $.ajax({
+                    url: '/delete-claim/' + claimId + '/',
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if(response.success) {
+                            row.remove();
+                        } else {
+                            alert('Erreur lors de la suppression de la réclamation.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Erreur lors de la suppression de la réclamation.');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <img src="{% static 'img/img.png' %}" alt="logo" style="height: auto;width: 100px;">
+    </div>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-8"><h2>Gestion des <b>Réclamations</b></h2></div>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Adresse</th>
+                        <th>CIN</th>
+                        <th>Type de Réclamation</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for claim in claims %}
+                    <tr>     
+                        <td>
+                            <span class="static-field" data-field="citizen_name">{{ claim.citizen_name }}</span>
+                            <div class="editable-field" style="display:none;">
+                                <input type="text" class="form-control" name="citizen_name" value="{{ claim.citizen_name }}">
+                            </div>
+                        </td>
+                        <td>
+                            <span class="static-field" data-field="citizen_email">{{ claim.citizen_email }}</span>
+                            <div class="editable-field" style="display:none;">
+                                <input type="email" class="form-control" name="citizen_email" value="{{ claim.citizen_email }}">
+                            </div>
+                        </td>
+                        <td>
+                            <span class="static-field" data-field="citizen_contact">{{ claim.citizen_contact }}</span>
+                            <div class="editable-field" style="display:none;">
+                                <input type="text" class="form-control" name="citizen_contact" value="{{ claim.citizen_contact }}">
+                            </div>
+                        </td>
+                        <td>
+                            <span class="static-field" data-field="citizen_adresse">{{ claim.citizen_adresse }}</span>
+                            <div class="editable-field" style="display:none;">
+                                <input type="text" class="form-control" name="citizen_adresse" value="{{ claim.citizen_adresse }}">
+                            </div>
+                        </td>
+                        <td>
+                            <span class="static-field" data-field="citizen_CIN">{{ claim.CIN }}</span>
+                            <div class="editable-field" style="display:none;">
+                                <input type="text" class="form-control" name="CIN" value="{{ claim.CIN }}">
+                            </div>
+                        </td>
+                        <td>
+                            <span class="static-field" data-field="claim_type">{{ claim.claim_type.name }}</span>
+                            <div class="editable-field" style="display:none;">
+                                <select class="form-control" name="claim_type">
+                                    {% for claim_type in claim_types %}
+                                    <option value="{{ claim_type.id }}" {% if claim.claim_type.id == claim_type.id %}selected{% endif %}>{{ claim_type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="static-field" data-field="claim_description">{{ claim.claim_description }}</span>
+                            <div class="editable-field" style="display:none;">
+                                <input type="text" class="form-control" name="claim_description" value="{{ claim.claim_description }}">
+                            </div>
+                        </td>
+                        <td>
+                            <a class="edit" title="Éditer" data-toggle="tooltip"><i class="material-icons">edit</i></a>
+                            <a class="update" title="Mettre à jour" data-toggle="tooltip" data-id="{{ claim.id }}" style="display:none;"><i class="material-icons">check</i></a>
+                            <a class="delete" title="Supprimer" data-toggle="tooltip" data-id="{{ claim.id }}"><i class="material-icons">delete</i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

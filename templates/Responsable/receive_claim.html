@@ -1,0 +1,326 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Réclamations</title>
+    
+    <!-- Liens pour les icônes Material et Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    
+    <!-- jQuery pour les interactions AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        /* Le modal est caché par défaut */
+        
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+      
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* Champs de saisie et textarea */
+.modal-content input[type="text"],
+.modal-content textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content textarea:focus {
+    border-color: #1b1f57;
+    outline: none;
+}
+
+/* Bouton envoyer */
+.modal-content button[type="submit"] {
+    background-color: #1b1f57;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-transform: uppercase;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #1b1f57;
+}
+
+        /* Styles CSS pour la mise en page générale */
+       
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Style de la table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Barre de recherche */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search-bar form {
+            display: flex;
+            background-color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar input[type="date"], .search-bar button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 25px;
+        }
+        .search-bar button {
+            background-color: #04233b;
+            color: white;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #024567;
+        }
+
+        /* En-tête */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 100px;
+        }
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+        .nav-icons .nav-link {
+            margin-left: 20px;
+            color: #000;
+            cursor: pointer;
+        }
+
+        /* Boutons */
+        button[type="button"] {
+            padding: 6px 12px;
+            background-color: #04233b;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="button"]:hover {
+            background-color: #1b1f57;
+        }
+        .alert {
+    position: fixed;
+    top: 20px; /* Mettre le message en haut */
+    left: 50%;
+    transform: translateX(-50%); /* Centrer horizontalement */
+    padding: 15px;
+    background-color: #4CAF50; /* Couleur verte pour le succès */
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    z-index: 9999;
+    width: 80%;
+    max-width: 400px;
+    opacity: 0;
+    animation: slideDown 0.5s forwards;
+}
+
+/* Animation de glissement vers le bas */
+@keyframes slideDown {
+    from {
+        top: -50px;
+        opacity: 0;
+    }
+    to {
+        top: 20px;
+        opacity: 1;
+    }
+}
+
+     
+
+
+    </style>
+</head>
+<body>
+    {% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+    <header class="header">
+        <div class="logo">
+            <a class="navbar-brand" href="index.html">
+                <img src="{% static 'img/img.png' %}" alt="logo">
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a class="nav-link" onclick="openModal()">
+                <span class="material-symbols-outlined">send</span>
+            </a>
+            <a class="nav-link" href="{% url 'profile_fonc' %}">
+                <span class="material-symbols-outlined">manage_accounts</span>
+            </a>
+            <a class="nav-link" href="{% url 'logoutc' %}">
+                <span class="material-symbols-outlined">logout</span>
+            </a>
+        </div>
+    </header>
+  
+
+    <h1>Réclamations affectées à {{ request.user }}</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>CIN du citoyen</th>
+                <th>Numéro de Réclamation</th>
+                <th>Type de Réclamation</th>
+                <th>Description</th>
+                <th>Date de Réclamation</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for claim in assigned_claims %}
+            <tr>
+                <td>{{ claim.CIN }}</td>
+                <td>{{ claim.numero_claim }}</td>
+                <td>{{ claim.claim_type }}</td>
+                <td>{{ claim.claim_description }}</td>
+                <td>{{ claim.date_of_claim }}</td>
+                <td>{{ claim.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            // Configuration AJAX pour CSRF token
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", $("meta[name='csrf-token']").attr("content"));
+                    }
+                }
+            });
+        });
+
+        // Ouverture et fermeture de la modale
+        function openModal() {
+            document.getElementById("sendMessageModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("sendMessageModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById("sendMessageModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <!-- Modal -->
+    <div id="sendMessageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Envoyer un message</h2>
+            <form method="post" action="{% url 'recieve_claim' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_body">Message :</label>
+                    {{ form.body }}
+                </div>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

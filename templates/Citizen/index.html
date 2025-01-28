@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/fevicon.png" type="">
+
+  <title>plateforme des réclamations</title>
+
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/Citizen/bootstrap.css' %}" />
+
+  <!-- fonts style -->
+  
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link href="{% static 'css/Citizen/font-awesome.min.css' %}" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/Citizen/style.css' %}"rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static 'css/Citizen/responsive.css' %}" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  
+<style>
+   body {
+          font-family: "Roboto", sans-serif;
+          font-weight: 400;
+          font-style: normal;
+      }
+</style>
+
+
+</head>
+
+<body>
+
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="header_top">
+        <div class="container-fluid ">
+          <div class="contact_nav">
+            <a href="">
+              <span class="material-symbols-outlined">
+                call
+                </span>
+                <p>+212 5 37 71 69 53</p>
+            </a>
+            
+            <a href="">
+              <span class="material-symbols-outlined">
+                mail
+                </span>
+                <p>contact@narsa.gov.ma</p>
+            </a>
+            <a href="">
+              <span class="material-symbols-outlined">
+                location_on
+                </span>
+                <p>Av. AL Arâar, Hay Riad – Rabat</p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="header_bottom">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container ">
+      
+            <a class="navbar-brand" href="index.html">
+                <img src="{%static 'img/img.png'%}" alt="logo" style="width: 100px; height: auto;">
+              </a>
+  
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav  ">
+                <li class="nav-item {% if request.path == '/page-index/' %}active{% endif %}">
+                  <a class="nav-link" href="{% url 'page_index' %}">Accueil <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item {% if request.path == '/submit-claim/' %}active{% endif %}">
+                  <a class="nav-link" href="{% url 'submit_claim' %}">Soumettre une réclamation</a>
+              </li>
+              <li class="nav-item {% if request.path == '/page-suivre-claim/' %}active{% endif %}">
+                  <a class="nav-link" href="{% url 'page-suivre-claim' %}">Suivre ma réclamation</a>
+              </li>
+                <a class="nav-link" href="{% url 'logoutc' %}"  style="color:black;"> <span class="material-symbols-outlined">
+                  logout
+                  </span> </a>
+               </li>   
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class="slider_section ">
+        <div class="slider_bg_box">
+            <img src="{%static 'img/car.jpg'%}" alt="" style="width: 100px; height: auto;">
+          </div>
+      <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="container ">
+              <div class="row">
+                <div class="col-md-7 ">
+                  <div class="detail-box">
+                    <h1>
+                     Traitement de réclamation en ligne
+                    </h1>
+                    <h4 style="color: white;">
+                      Bienvenue sur la plateforme de gestion des réclamations
+                    </h4>
+        
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    </section>
+    <!-- end slider section -->
+  </div>
+  <section class="claim-section">
+    <div class="container">
+        <div class="box submit-claim">
+            <h2 style="color: white;">SOUMETTRE UNE RÉCLAMATION</h2>
+            <p>Pour soumettre une nouvelle réclamation, cliquez sur le bouton ci-dessous.</p>
+            <button style=" border: 2px solid #1b1f57;color: #d82303; background-color: #d82303;"><a href="{% url 'submit_claim' %}" style="color: white;">Commencer la démarche »</a></button>
+        </div>
+        <div class="box track-claim">
+            <h2 style="color: white;">SUIVRE MA RÉCLAMATION</h2>
+            <p>Pour suivre l'état d'avancement d'une précédente réclamation, cliquez sur le bouton ci-dessous.</p>
+            <button style="background-color: #d82303;"><a href="{% url 'page-suivre-claim' %}" style="color: white; ">Accéder »</a></button>
+        </div>
+        
+        
+    </div>
+</section>
+
+
+ 
+
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <section class="footer_section">
+    <div class="container">
+      <p>
+     
+      </p>
+    </div>
+  </section>
+  <!-- footer section -->
+
+  <script type="text/javascript" src="{% static 'js/Citizen/jquery-3.4.1.min.js' %}"></script>
+  <!-- popper js -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <!-- bootstrap js -->
+  <script type="text/javascript" src="{% static 'js/Citizen/bootstrap.js' %}"></script>
+  <!-- owl slider -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <!-- custom js -->
+  <script type="text/javascript" src="{% static 'js/Citizen/custom.js' %}"></script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+  </script>
+  <!-- End Google Map -->
+
+</body>
+
+</html>

@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{% static 'css/manager/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  
+    <title>AdminHub</title>
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+    
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--grey);
+        }
+
+        main {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input[type="text"],
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #04233b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #04233b;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .alert {
+    position: fixed;
+    top: 20px; /* Mettre le message en haut */
+    left: 50%;
+    transform: translateX(-50%); /* Centrer horizontalement */
+    padding: 15px;
+    background-color: #4CAF50; /* Couleur verte pour le succès */
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    z-index: 9999;
+    width: 80%;
+    max-width: 400px;
+    opacity: 0;
+    animation: slideDown 0.5s forwards;
+}
+
+/* Animation de glissement vers le bas */
+@keyframes slideDown {
+    from {
+        top: -50px;
+        opacity: 0;
+    }
+    to {
+        top: 20px;
+        opacity: 1;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+
+    
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <img src="{% static 'img/img.png' %}" class="logo" alt="Logo" style="height: auto; width: 100px;">
+        <ul class="side-menu top">
+            <li>
+                <a href="{% url 'Dashboard' %}">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'claims_date' %}">
+                    <i class='bx bxs-file'></i>
+                    <span class="text">Claims</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="{% url 'Affectation' %}">
+                    <i class='bx bxs-user-check'></i>
+                    <span class="text">Assignment</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="{% url 'profile' %}">
+                    <i class='bx bxs-user'></i>
+                    <span class="text">Account Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logoute' %}" class="logout">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <a href="#" class="nav-link">Categories</a>
+            <form action="#">
+                <div class="form-input"></div>
+            </form>
+            <a href="#" class="profile">
+				<img src="{% static 'img/images.jpeg' %}">
+			</a>
+        </nav>
+        <!-- NAVBAR -->
+       
+        <!-- MAIN -->
+        <div class="container">
+            {% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+         {% endfor %}
+    </div>
+        {% endif %}
+        
+            <main>
+              
+                <h1>Assigner une Réclamation</h1>
+                <form method="post">
+                    {% csrf_token %}
+                   
+                    <div class="form-group">
+                        <label for="claim_number">Numéro de Réclamation:</label>
+                        <input type="text" id="claim_number" name="claim_number" required placeholder="Entrez le numéro de la réclamation">
+                    </div>
+                    <div class="form-group">
+                        <label for="employee">Employé:</label>
+                        <select name="employee" id="employee" required>
+                            {% for employee in employees %}
+                                <option value="{{ employee.id }}">{{ employee.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Assigner</button>
+                
+                   
+                </form>
+            </main>
+        </div>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="{% static 'js/manager/script.js' %}"></script>
+</body>
+</html>

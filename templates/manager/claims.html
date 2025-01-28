@@ -1,0 +1,311 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="{% static 'css/manager/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+   
+	<title>AdminHub</title>
+    <style>
+    body {
+        font-family: "Roboto", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    #claims-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    #claims-table th, #claims-table td {
+        padding: 15px ;
+        border: 1px solid #b8aeae;
+        text-align: left;
+        font-size: 12px; /* Adjusted font size */
+    }
+
+    #claims-table th:nth-child(2), 
+    #claims-table td:nth-child(2) {
+        width: 90px; /* Adjust width for email column */
+        word-wrap: break-word;
+    }
+
+    #claims-table th {
+        background-color: #ffffff;
+        color: #333;
+        font-weight: 500;
+    }
+
+    #claims-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #claims-table tr:hover {
+        background-color: #e9ecef;
+    }
+
+    #claims-table th:first-child, #claims-table td:first-child {
+        border-top-left-radius: 8px;
+    }
+
+    #claims-table th:last-child, #claims-table td:last-child {
+        border-top-right-radius: 8px;
+    }
+
+    #claims-table th:first-child, #claims-table td:first-child {
+        border-bottom-left-radius: 8px;
+    }
+
+    #claims-table th:last-child, #claims-table td:last-child {
+        border-bottom-right-radius: 8px;
+    }
+        
+    
+        .roboto-regular {
+            font-family: "Roboto", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .search-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="date"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #04233b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #3466a2;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #claims-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #claims-table th, #claims-table td {
+            padding: 15px 10px;
+            border: 1px solid #b8aeae;
+            text-align: left;
+        }
+        #claims-table th {
+            background-color: #ffffff;
+            color: #333;
+            font-weight: 600;
+        }
+        #claims-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        #claims-table tr:hover {
+            background-color: #e9ecef;
+        }
+        #claims-table th:first-child, #claims-table td:first-child {
+            border-top-left-radius: 8px;
+        }
+        #claims-table th:last-child, #claims-table td:last-child {
+            border-top-right-radius: 8px;
+        }
+        #claims-table th:first-child, #claims-table td:first-child {
+            border-bottom-left-radius: 8px;
+        }
+        #claims-table th:last-child, #claims-table td:last-child {
+            border-bottom-right-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<img src="{% static 'img/img.png' %}" class="logo" alt="Logo" style="height: auto; width: 100px;">
+		<ul class="side-menu top">
+			<li>
+				<a href="{% url 'Dashboard' %}">
+					<i class='bx bxs-dashboard'></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="{% url 'claims_date' %}">
+                    <i class='bx bxs-file'></i>
+					<span class="text">Claims</span>
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'Affectation' %}">
+                    <i class='bx bxs-user-check'></i>
+					<span class="text">Assignment</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="{% url 'profile' %}">
+					<i class='bx bxs-user'></i>
+					<span class="text">Account Settings</span>
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'logoute' %}" class="logout">
+					<i class='bx bxs-log-out-circle'></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu'></i>
+			<a href="#" class="nav-link">Categories</a>
+			<form action="#">
+				<div class="form-input"></div>
+			</form>
+            <a href="#" class="profile">
+				<img src="{% static 'img/images.jpeg' %}">
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+        <main>
+            {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+            {% if message %}
+            <div class="message">{{ message }}</div>
+            {% endif %}
+            <div class="search-container">
+                <form method="get" action="{% url 'claims_date' %}">
+                    <input type="date" id="date-search" name="date-search" value="{{ date_search }}">
+                    <button type="submit">Rechercher</button>
+                </form>
+            </div>
+            <div id="result">
+                <table id="claims-table">
+                    <thead>
+                        <tr>
+                            <th>Citizen Name</th>
+                            <th>Citizen Contact</th> 
+                            <th>Claim Number</th>            
+                            <th>Claim Type</th>
+                            <th>Description</th>
+                            <th> date of claim</th>
+                            <th>Status</th>
+                            <th>Is Assigned</th>
+                            <th>Valiation status</th>
+                            <th>Action</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for claim in claims %}
+                        <tr>
+                            <td>{{ claim.citizen_name }}</td>
+                            <td>{{ claim.citizen_contact }}</td>
+                            <td>{{ claim.numero_claim }}</td>
+                            <td>{{ claim.claim_type }}</td>
+                            <td>{{ claim.claim_description  }}</td>
+                            <td>{{ claim.date_of_claim }}</td>
+                            <td>{{ claim.status }}</td>
+                            <td>{{ claim.is_assigned}}</td>
+                            <td>{{ claim.validation_status}}</td>
+                            <td>
+                                <form action="{% url 'update_is_assigned_claim' claim.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn">
+                                        {% if claim.is_assigned %} Unassign {% else %} Assign {% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{% url 'validate_claim' claim.id %}" method="post" style="display:inline;" >
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn validate-btn" style="background-color: green; color: white;">
+                                        Valider
+                                    </button>
+                                </form>
+                                <form action="{% url 'reject_claim' claim.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn reject-btn" style="background-color: red; color: white;">
+                                        Rejeter
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+
+	<script src="{% static 'js/manager/script.js' %}"></script>
+</body>
+</html>
+                </table>
+           
+            </div>
+        </main>
+    
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+
+	<script src="{% static 'js/manager/script.js'%}"></script>
+</body>
+</html>

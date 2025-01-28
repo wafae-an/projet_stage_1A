@@ -1,0 +1,79 @@
+
+.logo img {
+    width: 100px;
+    height: auto;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.search-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="date"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color:#3466a2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #3466a2;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#claims-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#claims-table th, #claims-table td {
+    padding: 10px;
+    border: 1px solid #b8aeae;
+    text-align: left;
+}
+
+#claims-table th {
+    background-color: #ffffff;
+    color: #333;
+}
+
+#claims-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#claims-table tr:hover {
+    background-color: #e9ecef;
+}

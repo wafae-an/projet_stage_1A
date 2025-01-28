@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de Réclamation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  
+    
+<style>
+    
+    body {
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 500px;
+    width: 100%;
+}
+
+.card-header {
+    background-color: #04233b;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.card-body {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+p {
+    font-size: 18px;
+    color: #333;
+    margin: 20px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #04233b;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #04233b;
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>Réclamation Soumise</h1>
+            </div>
+            <div class="card-body">
+                <p>Votre réclamation a été soumise avec succès.</p>
+                <p>Un message vous sera envoyé par sms pour récupérer le numéro de votre réclamation.</p>
+                <a href="{% url 'page_index' %}" class="btn">Retour à la page d'accueil</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
